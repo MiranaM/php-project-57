@@ -16,15 +16,21 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <!-- Ссылка на статусы задач (гости тоже видят) -->
+                    <!-- Ссылка на статусы задач -->
                     <x-nav-link :href="route('task_statuses.index')" :active="request()->routeIs('task_statuses.*')">
                         {{ __('Статусы задач') }}
                     </x-nav-link>
 
-                    <!-- Ссылка на метки (гости тоже видят) -->
+                    <!-- Ссылка на метки -->
                     <x-nav-link :href="route('labels.index')" :active="request()->routeIs('labels.*')">
                         {{ __('Метки') }}
                     </x-nav-link>
+
+                    <!-- Ссылка на задачи -->
+                    <x-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.*')">
+                        {{ __('Задачи') }}
+                    </x-nav-link>
+
                 </div>
             </div>
 

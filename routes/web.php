@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,8 @@ Route::resource('task_statuses', TaskStatusController::class)
     ->except(['show']); // гости смогут видеть только index
 
 Route::resource('labels', LabelController::class)
-    ->except(['show']);
+    ->except(['show']); // гости смогут видеть только index
+    
+Route::resource('tasks', TaskController::class);
 
 require __DIR__.'/auth.php';
