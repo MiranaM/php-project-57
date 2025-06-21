@@ -20,6 +20,11 @@
                     <x-nav-link :href="route('task_statuses.index')" :active="request()->routeIs('task_statuses.*')">
                         {{ __('Статусы задач') }}
                     </x-nav-link>
+
+                    <!-- Ссылка на метки (гости тоже видят) -->
+                    <x-nav-link :href="route('labels.index')" :active="request()->routeIs('labels.*')">
+                        {{ __('Метки') }}
+                    </x-nav-link>
                 </div>
             </div>
 

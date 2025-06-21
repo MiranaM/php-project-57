@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         // сидер статусов задач
         $this->call([
             TaskStatusSeeder::class,
+            LabelSeeder::class,
         ]);
 
         // создание пользователя

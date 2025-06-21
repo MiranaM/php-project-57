@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskStatusController;
+use App\Http\Controllers\LabelController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,5 +21,8 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('task_statuses', TaskStatusController::class)
     ->except(['show']); // гости смогут видеть только index
+
+Route::resource('labels', LabelController::class)
+    ->except(['show']);
 
 require __DIR__.'/auth.php';
