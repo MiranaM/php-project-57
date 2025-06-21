@@ -63,9 +63,15 @@ class LabelController extends Controller
     // DELETE /labels/{label}
     public function destroy(Label $label)
     {
+        // проверка, есть ли связанные задачи
+        if ($label->tasks()->exists()) {
+            flash(__('Не удалось удалить метку'))->error();
+            return redirect()->route('labels.index');
+        }
+    
         $label->delete();
-
+    
         flash(__('Метка успешно удалена'))->success();
         return redirect()->route('labels.index');
-    }
+    }    
 }

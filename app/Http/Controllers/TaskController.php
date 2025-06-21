@@ -60,8 +60,10 @@ class TaskController extends Controller
     // GET /tasks/{task}
     public function show(Task $task)
     {
+        $task->load(['status', 'assignee', 'labels']);
         return view('tasks.show', compact('task'));
     }
+    
 
     // GET /tasks/{task}/edit
     public function edit(Task $task)

@@ -13,7 +13,6 @@ class TaskTest extends TestCase
 {
     use RefreshDatabase;
 
-
     public function testGuest_can_view_task_index()
     {
         Task::factory()->count(2)->create();
@@ -159,5 +158,19 @@ class TaskTest extends TestCase
         $this->actingAs($user)
              ->patch(route('tasks.update', $task), [])
              ->assertSessionHasErrors(['name','status_id']);
+    }
+
+    public function testShow_displays_labels_attached_to_task()
+    {
+        $user  = User::factory()->create();
+        $label = Label::factory()->create(['name' => 'foo']);
+        $task  = Task::factory()->create(['created_by_id' => $user->id]);
+        $task->labels()->attach($label->id);
+
+        $response = $this->actingAs($user)
+                        ->get(route('tasks.show', $task));
+
+        $response->assertStatus(200)
+                ->assertSee('foo');
     }
 }

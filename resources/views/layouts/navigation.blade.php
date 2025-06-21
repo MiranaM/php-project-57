@@ -16,6 +16,11 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    <!-- Ссылка на задачи -->
+                    <x-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.*')">
+                        {{ __('Задачи') }}
+                    </x-nav-link>
+
                     <!-- Ссылка на статусы задач -->
                     <x-nav-link :href="route('task_statuses.index')" :active="request()->routeIs('task_statuses.*')">
                         {{ __('Статусы задач') }}
@@ -26,10 +31,6 @@
                         {{ __('Метки') }}
                     </x-nav-link>
 
-                    <!-- Ссылка на задачи -->
-                    <x-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.*')">
-                        {{ __('Задачи') }}
-                    </x-nav-link>
 
                 </div>
             </div>
