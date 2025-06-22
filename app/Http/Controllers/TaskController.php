@@ -7,6 +7,8 @@ use App\Models\TaskStatus;
 use App\Models\Label;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
@@ -17,11 +19,25 @@ class TaskController extends Controller
     }
 
     // GET /tasks
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::with(['status', 'creator', 'assignee', 'labels'])->get();
-        return view('tasks.index', compact('tasks'));
-    }
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([
+                AllowedFilter::exact('status_id')->ignore(null),
+                AllowedFilter::exact('assigned_to_id')->ignore(null),
+                AllowedFilter::exact('created_by_id')->ignore(null),
+                AllowedFilter::exact('labels.id')->ignore(null),
+            ])
+            ->with(['status', 'assignee', 'labels', 'creator'])
+            ->paginate(10)
+            ->appends(request()->query());
+    
+        $statuses = TaskStatus::all();
+        $users = User::all();
+        $labels = Label::all();
+    
+        return view('tasks.index', compact('tasks', 'statuses', 'users', 'labels'));
+    }    
 
     // GET /tasks/create
     public function create()
