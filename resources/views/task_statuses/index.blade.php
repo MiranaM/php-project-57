@@ -13,7 +13,7 @@
                 <div class="px-6 py-4">
                     <a href="{{ route('task_statuses.create') }}"
                         class="inline-block bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded text-sm font-semibold">
-                        Новый статус
+                        Создать статус
                     </a>
                 </div>
                 @endauth
