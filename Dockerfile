@@ -18,7 +18,7 @@ RUN composer install --optimize-autoloader
 
 # Установить JS-зависимости и собрать Vite
 RUN npm install
-RUN npm run build
+RUN npm run build && cp public/build/.vite/manifest.json public/build/manifest.json
 
 # Очистить кэш
 RUN php artisan config:clear
