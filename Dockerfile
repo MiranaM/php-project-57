@@ -10,6 +10,15 @@ COPY . .
 RUN composer install --optimize-autoloader
 RUN php artisan config:clear
 
+# Install the `npm` package
+RUN apk add --no-cache npm
+
+# Install NPM dependencies
+RUN npm install
+
+# Build Vite assets
+RUN npm run build
+
 EXPOSE 8000
 
 CMD php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000
