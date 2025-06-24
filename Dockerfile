@@ -16,14 +16,8 @@ COPY . .
 # Установить зависимости PHP
 RUN composer install --optimize-autoloader
 
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-RUN apt-get install -y nodejs
-
-WORKDIR /app
-
-COPY . .
-RUN composer install
-RUN npm ci
+# Установить JS-зависимости и собрать Vite
+RUN npm install
 RUN npm run build
 
 # Очистить кэш
