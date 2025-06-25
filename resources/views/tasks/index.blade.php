@@ -54,7 +54,7 @@
                 <div class="px-6 py-4 bg-white">
                     <a href="{{ route('tasks.create') }}"
                         class="inline-block bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded text-sm font-semibold">
-                        Создать задачу
+                        Create task
                     </a>
                 </div>
                 @endauth
