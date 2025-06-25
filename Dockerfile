@@ -1,20 +1,13 @@
 FROM php:8.2-cli
 
-# Установить зависимости PHP и Node.js
-RUN apt-get update && apt-get install -y git unzip libpq-dev zip \
-    && docker-php-ext-install pdo pdo_pgsql
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libzip-dev
+RUN docker-php-ext-install pdo pdo_pgsql zip
 
-# Установить npm (если alpine — заменить на apk!)
-RUN apt-get install -y nodejs npm
-
-# Копировать composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-WORKDIR /app
-COPY . .
-
-# Установить зависимости PHP
-RUN composer install --optimize-autoloader
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get install -y nodejs
@@ -23,12 +16,9 @@ WORKDIR /app
 
 COPY . .
 RUN composer install
-RUN npm install && npm run build
-
-# Очистить кэш
-RUN php artisan config:clear
+RUN npm ci
+RUN npm run build
 
 EXPOSE 8000
 
-# Выполнить миграции и запустить сервер
 CMD php artisan config:cache && php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000
