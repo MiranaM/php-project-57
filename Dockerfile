@@ -23,9 +23,7 @@ WORKDIR /app
 
 COPY . .
 RUN composer install
-RUN npm install
-RUN npm ci
-RUN npm run build
+RUN npm install && npm run build
 
 # Очистить кэш
 RUN php artisan config:clear
@@ -33,4 +31,4 @@ RUN php artisan config:clear
 EXPOSE 8000
 
 # Выполнить миграции и запустить сервер
-CMD npm run build && php artisan config:cache && php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000
+CMD php artisan config:cache && php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000
