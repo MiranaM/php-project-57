@@ -35,15 +35,19 @@
                     </button>
                 </form>
                 @else
+                @guest
                 <a href="{{ route('login') }}"
                     class="text-sm bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 py-1.5 rounded">
-                    Вход
+                    Login
                 </a>
+                @endguest
                 @if (Route::has('register'))
+                @guest
                 <a href="{{ route('register') }}"
                     class="text-sm bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 py-1.5 rounded">
                     Регистрация
                 </a>
+                @endguest
                 @endif
                 @endauth
             </div>
