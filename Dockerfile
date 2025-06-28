@@ -20,4 +20,6 @@ RUN composer install
 RUN npm ci
 RUN npm run build
 
+RUN ls -la /app/public/build
+
 CMD ["bash", "-c", "php artisan migrate:fresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
