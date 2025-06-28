@@ -1,7 +1,7 @@
 import './bootstrap';
+import '../sass/app.scss'
 
-import Alpine from 'alpinejs';
+import * as bootstrap from 'bootstrap'
 
-window.Alpine = Alpine;
-
-Alpine.start();
+import ujs from '@rails/ujs';
+ujs.start();

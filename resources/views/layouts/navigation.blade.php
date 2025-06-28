@@ -1,54 +1,45 @@
-<nav class="bg-white border-b border-gray-100">
+<nav class="bg-white shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
-
-            <!-- Левая часть: название + ссылки -->
-            <div class="flex items-center space-x-8">
-                <a href="{{ route('home') }}" class="text-lg font-bold text-gray-900">
+            {{-- Название --}}
+            <div class="flex-shrink-0 flex items-center">
+                <a href="{{ url('/') }}" class="text-lg font-bold text-gray-800">
                     Менеджер задач
-                </a>
-
-                <a href="{{ route('tasks.index') }}"
-                    class="text-sm font-medium text-gray-700 hover:text-gray-900 {{ request()->routeIs('tasks.*') ? 'font-bold' : '' }}">
-                    Задачи
-                </a>
-
-                <a href="{{ route('task_statuses.index') }}"
-                    class="text-sm font-medium text-gray-700 hover:text-gray-900 {{ request()->routeIs('task_statuses.*') ? 'font-bold' : '' }}">
-                    Статусы
-                </a>
-
-                <a href="{{ route('labels.index') }}"
-                    class="text-sm font-medium text-gray-700 hover:text-gray-900 {{ request()->routeIs('labels.*') ? 'font-bold' : '' }}">
-                    Метки
                 </a>
             </div>
 
-            <!-- Правая часть: Вход / Регистрация или профиль -->
-            <div class="flex items-center space-x-2">
+            {{-- Навигационные ссылки --}}
+            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <x-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.*')">
+                    Задачи
+                </x-nav-link>
+                <x-nav-link :href="route('task_statuses.index')" :active="request()->routeIs('task_statuses.*')">
+                    Статусы
+                </x-nav-link>
+                <x-nav-link :href="route('labels.index')" :active="request()->routeIs('labels.*')">
+                    Метки
+                </x-nav-link>
+            </div>
+
+            {{-- Аутентификация --}}
+            <div class="flex items-center space-x-4">
                 @auth
+                <span class="text-gray-700">{{ Auth::user()->name }}</span>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit"
-                        class="text-sm bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 py-1.5 rounded">
-                        Выход
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm">
+                        Выйти
                     </button>
                 </form>
                 @else
-                @guest
                 <a href="{{ route('login') }}"
-                    class="text-sm bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 py-1.5 rounded">
-                    Login
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
+                    Вход
                 </a>
-                @endguest
-                @if (Route::has('register'))
-                @guest
                 <a href="{{ route('register') }}"
-                    class="text-sm bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 py-1.5 rounded">
-                    Register
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
+                    Регистрация
                 </a>
-                @endguest
-                @endif
                 @endauth
             </div>
         </div>

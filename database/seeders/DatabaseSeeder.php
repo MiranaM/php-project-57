@@ -2,30 +2,23 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\TaskStatusSeeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // сидер статусов задач
         $this->call([
+            UserSeeder::class,
             TaskStatusSeeder::class,
             LabelSeeder::class,
+            TaskSeeder::class,
         ]);
-
-        // создание пользователя
-        User::firstOrCreate(
-            ['email' => 'test@example.com'],
-            [
-                'name' => 'Test User',
-                'password' => bcrypt('password'),
-            ]
-        );
-    }
+    }    
 }

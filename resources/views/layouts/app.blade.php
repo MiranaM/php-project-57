@@ -17,11 +17,18 @@
 </head>
 
 <body class="font-sans antialiased">
-    @include('flash::message')
     <div class="min-h-screen bg-gray-100">
+        {{-- Навигация --}}
         @include('layouts.navigation')
 
-        <!-- Page Heading -->
+        {{-- Флеш-сообщения --}}
+        @if (session()->has('flash_notification'))
+        <div class="max-w-7xl mx-auto px-4">
+            @include('flash::message')
+        </div>
+        @endif
+
+        {{-- Заголовок страницы --}}
         @isset($header)
         <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -30,9 +37,9 @@
         </header>
         @endisset
 
-        <!-- Page Content -->
+        {{-- Основной контент --}}
         <main>
-            {{ $slot }}
+            {{ $slot ?? '' }}
         </main>
     </div>
 </body>

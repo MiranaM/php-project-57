@@ -2,44 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'status_id',
-        'created_by_id',
-        'assigned_to_id',
-    ];
-
-    // Статус задачи
-    public function status(): BelongsTo
+    public function status()
     {
-        return $this->belongsTo(TaskStatus::class, 'status_id');
+        return $this->belongsTo(TaskStatus::class);
     }
 
-    // Кто создал задачу
-    public function creator(): BelongsTo
+    public function creator()
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
 
-    // Кем назначена задача
-    public function assignee(): BelongsTo
+    public function assignee()
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
     }
 
-    // Метки задачи
-    public function labels(): BelongsToMany
+    public function labels()
     {
-        return $this->belongsToMany(Label::class, 'label_task');
+        return $this->belongsToMany(Label::class);
     }
 }

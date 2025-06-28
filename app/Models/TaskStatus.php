@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class TaskStatus extends Model
 {
     use HasFactory;
 
-    // Разрешаем массовое заполнение поля name
-    protected $fillable = ['name'];
+    public function tasks()
+    {
+        return $this->hasMany(\App\Models\Task::class, 'status_id');
+    }
 }

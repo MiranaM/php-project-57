@@ -3,13 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskStatusController;
-use App\Http\Controllers\LabelController;
 use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return view('welcome');
-})->name('home');
-
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -21,12 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('task_statuses', TaskStatusController::class)
-    ->except(['show']); // гости смогут видеть только index
-
-Route::resource('labels', LabelController::class)
-    ->except(['show']); // гости смогут видеть только index
-    
-Route::resource('tasks', TaskController::class);
+Route::resource('/task_statuses', TaskStatusController::class);
+Route::resource('/tasks', TaskController::class);
+Route::resource('/labels', \App\Http\Controllers\LabelController::class);
 
 require __DIR__.'/auth.php';

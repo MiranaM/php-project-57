@@ -7,17 +7,17 @@ use App\Models\TaskStatus;
 
 class TaskStatusSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $statuses = [
             'Новый',
             'В работе',
             'На тестировании',
-            'Завершён',
+            'Завершен',
         ];
 
-        foreach ($statuses as $name) {
-            TaskStatus::firstOrCreate(['name' => $name]);
+        foreach ($statuses as $status) {
+            TaskStatus::firstOrCreate(['name' => $status]);
         }
     }
 }

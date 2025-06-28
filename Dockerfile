@@ -1,43 +1,25 @@
-FROM node:18 AS frontend
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci
-
-COPY resources/ resources/
-COPY vite.config.js ./
-COPY public/ public/
-RUN npm run build
-
-
 FROM php:8.2-cli
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    libzip-dev \
-    unzip \
-    curl \
-    git \
-    gnupg \
-    && docker-php-ext-install pdo pdo_pgsql zip
+    libzip-dev
+RUN docker-php-ext-install pdo pdo_pgsql zip
+# RUN docker-php-ext-configure pdo pdo_pgsql
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
 
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install -y nodejs
 
 WORKDIR /app
 
 COPY . .
+RUN composer install
+RUN npm ci
+RUN npm run build
 
-COPY --from=frontend /app/public/build /app/public/build
+RUN > database/database.sqlite
 
-RUN composer install --no-dev --optimize-autoloader
-
-EXPOSE 8000
-
-CMD php artisan config:cache \
- && php artisan migrate --force \
- && php artisan db:seed --force \
- && php artisan serve --host=0.0.0.0 --port=8000
+CMD ["bash", "-c", "php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
