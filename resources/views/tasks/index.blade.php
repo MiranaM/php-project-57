@@ -10,7 +10,7 @@
 
             {{-- Фильтр --}}
             <form method="GET" action="{{ route('tasks.index') }}" class="mb-4 flex flex-wrap gap-4 items-center">
-                <select name="status_id" class="border-gray-300 rounded">
+                <select name="filter[status_id]" class="border-gray-300 rounded">
                     <option value="">Статус</option>
                     @foreach($statuses as $status)
                     <option value="{{ $status->id }}" @if(($filter['status_id'] ?? '' )==$status->id) selected @endif>
@@ -19,7 +19,7 @@
                     @endforeach
                 </select>
 
-                <select name="created_by_id" class="border-gray-300 rounded">
+                <select name="filter[created_by_id]" class="border-gray-300 rounded">
                     <option value="">Автор</option>
                     @foreach($users as $user)
                     <option value="{{ $user->id }}" @if(($filter['created_by_id'] ?? '' )==$user->id) selected @endif>
@@ -28,7 +28,7 @@
                     @endforeach
                 </select>
 
-                <select name="assigned_to_id" class="border-gray-300 rounded">
+                <select name="filter[assigned_to_id]" class="border-gray-300 rounded">
                     <option value="">Исполнитель</option>
                     @foreach($users as $user)
                     <option value="{{ $user->id }}" @if(($filter['assigned_to_id'] ?? '' )==$user->id) selected @endif>
@@ -36,11 +36,11 @@
                     </option>
                     @endforeach
                 </select>
-
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                     Применить
                 </button>
             </form>
+
 
             {{-- Таблица задач --}}
             <div class="overflow-x-auto bg-white shadow rounded">

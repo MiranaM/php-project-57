@@ -23,6 +23,8 @@ class TaskController extends Controller
         $statuses = TaskStatus::all();
         $users = User::all();
 
+        $filter = $request->input('filter', []); // все параметры фильтра
+
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
                 AllowedFilter::exact('status_id'),
@@ -32,15 +34,15 @@ class TaskController extends Controller
             ->with(['status', 'creator', 'assignee'])
             ->defaultSort('id')
             ->paginate(15)
-            ->appends($request->query());
+            ->appends(['filter' => $filter]);
 
         return view('tasks.index', [
             'tasks' => $tasks,
             'statuses' => $statuses,
             'users' => $users,
-            'filter' => $request->only(['status_id', 'created_by_id', 'assigned_to_id']),
+            'filter' => $filter,
         ]);
-    }  
+    }
 
     public function create()
     {
