@@ -68,8 +68,12 @@ class TaskController extends Controller
         $task = Task::create($validated);
         $task->labels()->sync($request->input('labels', []));
 
+        $perPage = 15;
+        $tasksCount = Task::count();
+        $lastPage = ceil($tasksCount / $perPage);
+
         flash('Задача успешно создана')->success();
-        return redirect()->route('tasks.index');
+        return redirect()->route('tasks.index', ['page' => $lastPage]);
     }
 
     public function show(Task $task)
@@ -103,15 +107,18 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
-    public function destroy(Task $task)
+    public function destroy(Task $task, Request $request)
     {
-        $this->authorizeAction($task);
+        if (Auth::id() !== $task->created_by_id) {
+            flash('Нет прав для этого действия')->error();
+            return redirect()->route('tasks.index', ['page' => $request->input('page', 1)]);
+        }
 
         $task->labels()->detach();
         $task->delete();
 
         flash('Задача успешно удалена')->success();
-        return redirect()->route('tasks.index');
+        return redirect()->route('tasks.index', ['page' => $request->input('page', 1)]);
     }
 
     private function authorizeAction(Task $task)

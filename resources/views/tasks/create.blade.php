@@ -34,8 +34,9 @@
                 {{-- Статус --}}
                 <div class="mb-4">
                     <label for="status_id" class="block text-gray-700 text-sm font-bold mb-2">Статус</label>
-                    <select name="status_id" id="status_id" class="border-gray-300 rounded w-full">
-                        <option value="">-- выберите статус --</option>
+                    <select name="status_id" id="status_id"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value=""></option>
                         @foreach($statuses as $status)
                         <option value="{{ $status->id }}" @selected(old('status_id')==$status->id)>
                             {{ $status->name }}
@@ -50,8 +51,9 @@
                 {{-- Исполнитель --}}
                 <div class="mb-4">
                     <label for="assigned_to_id" class="block text-gray-700 text-sm font-bold mb-2">Исполнитель</label>
-                    <select name="assigned_to_id" id="assigned_to_id" class="border-gray-300 rounded w-full">
-                        <option value="">-- не назначено --</option>
+                    <select name="assigned_to_id" id="assigned_to_id"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value=""></option>
                         @foreach($users as $user)
                         <option value="{{ $user->id }}" @selected(old('assigned_to_id')==$user->id)>
                             {{ $user->name }}
@@ -66,10 +68,11 @@
                 {{-- Метки --}}
                 <div class="mb-4">
                     <label for="labels" class="block text-gray-700 text-sm font-bold mb-2">Метки</label>
-                    <select multiple name="labels[]" id="labels" class="border-gray-300 rounded w-full">
+                    <select multiple name="labels[]" id="labels" size="4"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         @foreach($labels as $label)
-                        <option value="{{ $label->id }}" @if(collect(old('labels', $task->labels->pluck('id') ??
-                            []))->contains($label->id)) selected @endif>
+                        <option value="{{ $label->id }}" @if(collect(old('labels', []))->contains($label->id)) selected
+                            @endif>
                             {{ $label->name }}
                         </option>
                         @endforeach

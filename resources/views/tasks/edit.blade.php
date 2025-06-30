@@ -48,7 +48,7 @@
                 <div class="mb-4">
                     <label for="assigned_to_id" class="block text-gray-700 text-sm font-bold mb-2">Исполнитель</label>
                     <select name="assigned_to_id" id="assigned_to_id" class="border-gray-300 rounded w-full">
-                        <option value="">-- не назначено --</option>
+                        <option value="">-- --</option>
                         @foreach($users as $user)
                         <option value="{{ $user->id }}" @selected(old('assigned_to_id', $task->assigned_to_id) ==
                             $user->id)>
@@ -73,7 +73,7 @@
 
                 <div class="flex items-center justify-between">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Сохранить
+                        Обновить
                     </button>
                 </div>
             </form>

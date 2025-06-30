@@ -55,7 +55,7 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-4 py-2 text-sm text-left">ID</th>
-                            <th class="px-4 py-2 text-sm text-left">Статус</th>
+                            <th class="px-4 py-2 text-sm text-left w-48">Статус</th>
                             <th class="px-4 py-2 text-sm text-left">Имя</th>
                             <th class="px-4 py-2 text-sm text-left">Автор</th>
                             <th class="px-4 py-2 text-sm text-left">Исполнитель</th>
@@ -78,11 +78,20 @@
                             <td class="px-4 py-2 text-sm">{{ $task->creator->name }}</td>
                             <td class="px-4 py-2 text-sm">{{ $task->assignee?->name ?? '—' }}</td>
                             <td class="px-4 py-2 text-sm">{{ $task->created_at->format('d.m.Y') }}</td>
-                            @auth
                             <td class="px-4 py-2 text-sm">
                                 <a href="{{ route('tasks.edit', $task) }}">Изменить</a>
+                                @if(Auth::id() === $task->created_by_id)
+                                <form action="{{ route('tasks.destroy', $task) }}" method="POST"
+                                    style="display:inline-block;" onsubmit="return confirm('Вы уверены?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" name="page" value="{{ request()->get('page', 1) }}">
+                                    <button type="submit"
+                                        class="text-red-600 hover:underline bg-transparent border-0 cursor-pointer p-0 ml-2">Удалить</button>
+                                </form>
+                                @endif
                             </td>
-                            @endauth
+
                         </tr>
                         @endforeach
                     </tbody>
