@@ -103,7 +103,7 @@ class TaskController extends Controller
         $task->update($validated);
         $task->labels()->sync($request->input('labels', []));
 
-        flash('Задача успешно обновлена')->success();
+        flash('Задача успешно изменена')->success();
         return redirect()->route('tasks.index');
     }
 

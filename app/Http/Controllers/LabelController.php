@@ -52,7 +52,7 @@ class LabelController extends Controller
         ]);
 
         $label->update($validated);
-        flash('Метка успешно обновлена')->success();
+        flash('Метка успешно изменена')->success();
         return redirect()->route('labels.index');
     }
 
