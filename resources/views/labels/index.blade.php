@@ -23,9 +23,9 @@
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Имя</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Описание</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Дата создания</th>
-                            @auth
+                            @canany(['update', 'delete'], new \App\Models\Label())
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Действия</th>
-                            @endauth
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -35,20 +35,28 @@
                             <td class="px-4 py-2 text-sm">{{ $label->name }}</td>
                             <td class="px-4 py-2 text-sm">{{ $label->description }}</td>
                             <td class="px-4 py-2 text-sm">{{ $label->created_at->format('d.m.Y') }}</td>
-                            @auth
-                            <td class="px-4 py-2 text-sm">
-                                <form action="{{ route('labels.destroy', $label) }}" method="POST" class="inline">
+                            @canany(['update', 'delete'], $label)
+                            <td>
+                                @can('delete', $label)
+                                <a class="text-red-600 hover:text-red-900" href="#" onclick="if(confirm('Вы уверены, что хотите удалить метку?')) { 
+                                    event.preventDefault(); 
+                                    document.getElementById('delete-form-{{ $label->id }}').submit(); 
+                                }">
+                                    Удалить
+                                </a>
+                                <form id="delete-form-{{ $label->id }}" action="{{ route('labels.destroy', $label) }}"
+                                    method="POST" class="hidden">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:underline"
-                                        onclick="return confirm('Вы уверены, что хотите удалить метку?')">
-                                        Удалить
-                                    </button>
                                 </form>
+                                @endcan
+
+                                @can('update', $label)
                                 <a href="{{ route('labels.edit', $label) }}"
-                                    class="text-blue-600 hover:underline">Изменить</a>
+                                    class="text-blue-600 hover:text-blue-900">Изменить</a>
+                                @endcan
                             </td>
-                            @endauth
+                            @endcanany
                         </tr>
                         @endforeach
                     </tbody>

@@ -59,9 +59,9 @@
                             <th class="px-4 py-2 text-sm text-left">Автор</th>
                             <th class="px-4 py-2 text-sm text-left">Исполнитель</th>
                             <th class="px-4 py-2 text-sm text-left">Дата создания</th>
-                            @auth
+                            @canany(['update', 'delete'], new \App\Models\Task())
                             <th class="px-4 py-2 text-sm text-left">Действия</th>
-                            @endauth
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -77,21 +77,28 @@
                             <td class="px-4 py-2 text-sm">{{ $task->creator->name }}</td>
                             <td class="px-4 py-2 text-sm">{{ $task->assignee?->name ?? '—' }}</td>
                             <td class="px-4 py-2 text-sm">{{ $task->created_at->format('d.m.Y') }}</td>
-                            @auth
-                            <td class="px-4 py-2 text-sm">
-                                <a href="{{ route('tasks.edit', $task) }}">Изменить</a>
-                                @if(Auth::id() === $task->created_by_id)
-                                <form action="{{ route('tasks.destroy', $task) }}" method="POST"
-                                    style="display:inline-block;" onsubmit="return confirm('Вы уверены?')">
+                            @canany(['update', 'delete'], $task)
+                            <td>
+                                @can('delete', $task)
+                                <a class="text-red-600 hover:text-red-900" href="#" onclick="if(confirm('Вы уверены, что хотите удалить задачу?')) { 
+                                    event.preventDefault(); 
+                                    document.getElementById('delete-form-{{ $task->id }}').submit(); 
+                                }">
+                                    Удалить
+                                </a>
+                                <form id="delete-form-{{ $task->id }}" action="{{ route('tasks.destroy', $task) }}"
+                                    method="POST" class="hidden">
                                     @csrf
                                     @method('DELETE')
-                                    <input type="hidden" name="page" value="{{ request()->get('page', 1) }}">
-                                    <button type="submit"
-                                        class="text-red-600 hover:underline bg-transparent border-0 cursor-pointer p-0 ml-2">Удалить</button>
                                 </form>
-                                @endif
+                                @endcan
+
+                                @can('update', $task)
+                                <a href="{{ route('tasks.edit', $task) }}"
+                                    class="text-blue-600 hover:text-blue-900">Изменить</a>
+                                @endcan
                             </td>
-                            @endauth
+                            @endcanany
                         </tr>
                         @endforeach
                     </tbody>

@@ -34,19 +34,28 @@
                             <td class="px-4 py-2 text-sm">{{ $status->id }}</td>
                             <td class="px-4 py-2 text-sm">{{ $status->name }}</td>
                             <td class="px-4 py-2 text-sm">{{ $status->created_at->format('d.m.Y') }}</td>
-                            @auth
-                            <td class="px-4 py-2 text-sm">
-                                <form action="{{ route('task_statuses.destroy', $status) }}" method="POST"
-                                    class="inline">
+                            @canany(['update', 'delete'], $status)
+                            <td>
+                                @can('delete', $status)
+                                <a class="text-red-600 hover:text-red-900" href="#" onclick="if(confirm('Вы уверены, что хотите удалить метку?')) { 
+                                    event.preventDefault(); 
+                                    document.getElementById('delete-form-{{ $status->id }}').submit(); 
+                                }">
+                                    Удалить
+                                </a>
+                                <form id="delete-form-{{ $status->id }}"
+                                    action="{{ route('task_statuses.destroy', $status) }}" method="POST" class="hidden">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline"
-                                        onclick="return confirm('Вы уверены?')">Удалить</button>
                                 </form>
+                                @endcan
+
+                                @can('update', $status)
                                 <a href="{{ route('task_statuses.edit', $status) }}"
-                                    class="text-blue-500 hover:underline mr-2">Изменить</a>
+                                    class="text-blue-600 hover:text-blue-900">Изменить</a>
+                                @endcan
                             </td>
-                            @endauth
+                            @endcanany
                         </tr>
                         @endforeach
                     </tbody>
