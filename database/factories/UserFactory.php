@@ -19,7 +19,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         $faker = \Faker\Factory::create('ru_RU');
-    
+
         return [
             'name' => $faker->name(),
             'email' => $faker->unique()->safeEmail(),

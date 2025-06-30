@@ -19,7 +19,7 @@ class LabelSeeder extends Seeder
             ['name' => 'дубликат', 'description' => 'Повтор другой задачи'],
             ['name' => 'доработка', 'description' => 'Новая фича, которую нужно запилить'],
         ];
-    
+
         foreach ($labels as $label) {
             Label::firstOrCreate(['name' => $label['name']], $label);
         }
