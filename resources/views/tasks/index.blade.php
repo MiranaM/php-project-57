@@ -39,7 +39,6 @@
                         </option>
                         @endforeach
                     </select>
-
                     <button type="submit" class="btn btn-primary btn-sm">Применить</button>
                 </form>
 
