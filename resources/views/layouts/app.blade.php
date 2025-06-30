@@ -44,6 +44,7 @@
         {{-- Основной контент --}}
         <main>
             {{ $slot ?? '' }}
+            @yield('content')
         </main>
     </div>
 </body>

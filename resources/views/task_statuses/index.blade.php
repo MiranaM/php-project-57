@@ -36,8 +36,6 @@
                             <td class="px-4 py-2 text-sm">{{ $status->created_at->format('d.m.Y') }}</td>
                             @auth
                             <td class="px-4 py-2 text-sm">
-                                <a href="{{ route('task_statuses.edit', $status) }}"
-                                    class="text-blue-500 hover:underline mr-2">Изменить</a>
                                 <form action="{{ route('task_statuses.destroy', $status) }}" method="POST"
                                     class="inline">
                                     @csrf
@@ -45,6 +43,8 @@
                                     <button type="submit" class="text-red-500 hover:underline"
                                         onclick="return confirm('Вы уверены?')">Удалить</button>
                                 </form>
+                                <a href="{{ route('task_statuses.edit', $status) }}"
+                                    class="text-blue-500 hover:underline mr-2">Изменить</a>
                             </td>
                             @endauth
                         </tr>

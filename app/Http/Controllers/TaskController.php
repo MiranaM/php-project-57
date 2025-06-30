@@ -79,8 +79,6 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        $this->authorizeAction($task);
-
         $statuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
@@ -89,8 +87,6 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
-        $this->authorizeAction($task);
-
         $validated = $request->validate([
             'name' => 'required|max:255',
             'description' => 'nullable|string',

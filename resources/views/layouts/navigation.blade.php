@@ -24,10 +24,9 @@
             {{-- Аутентификация --}}
             <div class="flex items-center space-x-4">
                 @auth
-                <span class="text-gray-700">{{ Auth::user()->name }}</span>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm">
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
                         Выйти
                     </button>
                 </form>

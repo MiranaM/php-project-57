@@ -9,38 +9,45 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             {{-- Фильтр --}}
-            <form method="GET" action="{{ route('tasks.index') }}" class="mb-4 flex flex-wrap gap-4 items-center">
-                <select name="filter[status_id]" class="border-gray-300 rounded">
-                    <option value="">Статус</option>
-                    @foreach($statuses as $status)
-                    <option value="{{ $status->id }}" @if(($filter['status_id'] ?? '' )==$status->id) selected @endif>
-                        {{ $status->name }}
-                    </option>
-                    @endforeach
-                </select>
+            <div class="d-flex justify-content-between align-items-start mb-4 gap-3 flex-wrap">
+                {{-- Форма фильтра --}}
+                <form method="GET" action="{{ route('tasks.index') }}"
+                    class="d-flex flex-wrap gap-2 align-items-center">
+                    <select name="filter[status_id]" class="form-select form-select-sm w-auto">
+                        <option value="">Статус</option>
+                        @foreach($statuses as $status)
+                        <option value="{{ $status->id }}" @selected(($filter['status_id'] ?? '' )==$status->id)>
+                            {{ $status->name }}
+                        </option>
+                        @endforeach
+                    </select>
 
-                <select name="filter[created_by_id]" class="border-gray-300 rounded">
-                    <option value="">Автор</option>
-                    @foreach($users as $user)
-                    <option value="{{ $user->id }}" @if(($filter['created_by_id'] ?? '' )==$user->id) selected @endif>
-                        {{ $user->name }}
-                    </option>
-                    @endforeach
-                </select>
+                    <select name="filter[created_by_id]" class="form-select form-select-sm w-auto">
+                        <option value="">Автор</option>
+                        @foreach($users as $user)
+                        <option value="{{ $user->id }}" @selected(($filter['created_by_id'] ?? '' )==$user->id)>
+                            {{ $user->name }}
+                        </option>
+                        @endforeach
+                    </select>
 
-                <select name="filter[assigned_to_id]" class="border-gray-300 rounded">
-                    <option value="">Исполнитель</option>
-                    @foreach($users as $user)
-                    <option value="{{ $user->id }}" @if(($filter['assigned_to_id'] ?? '' )==$user->id) selected @endif>
-                        {{ $user->name }}
-                    </option>
-                    @endforeach
-                </select>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    Применить
-                </button>
-            </form>
+                    <select name="filter[assigned_to_id]" class="form-select form-select-sm w-auto">
+                        <option value="">Исполнитель</option>
+                        @foreach($users as $user)
+                        <option value="{{ $user->id }}" @selected(($filter['assigned_to_id'] ?? '' )==$user->id)>
+                            {{ $user->name }}
+                        </option>
+                        @endforeach
+                    </select>
 
+                    <button type="submit" class="btn btn-primary btn-sm">Применить</button>
+                </form>
+
+                {{-- Кнопка создания задачи --}}
+                @auth
+                <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-sm">Создать задачу</a>
+                @endauth
+            </div>
 
             {{-- Таблица задач --}}
             <div class="overflow-x-auto bg-white shadow rounded">
@@ -53,6 +60,9 @@
                             <th class="px-4 py-2 text-sm text-left">Автор</th>
                             <th class="px-4 py-2 text-sm text-left">Исполнитель</th>
                             <th class="px-4 py-2 text-sm text-left">Дата создания</th>
+                            @auth
+                            <th class="px-4 py-2 text-sm text-left">Действия</th>
+                            @endauth
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -68,6 +78,11 @@
                             <td class="px-4 py-2 text-sm">{{ $task->creator->name }}</td>
                             <td class="px-4 py-2 text-sm">{{ $task->assignee?->name ?? '—' }}</td>
                             <td class="px-4 py-2 text-sm">{{ $task->created_at->format('d.m.Y') }}</td>
+                            @auth
+                            <td class="px-4 py-2 text-sm">
+                                <a href="{{ route('tasks.edit', $task) }}">Изменить</a>
+                            </td>
+                            @endauth
                         </tr>
                         @endforeach
                     </tbody>
