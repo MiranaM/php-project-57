@@ -24,12 +24,15 @@
             {{-- Аутентификация --}}
             <div class="flex items-center space-x-4">
                 @auth
-                <form method="POST" action="{{ route('logout') }}">
+                <a href="{{ route('logout') }}"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Выйти
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
-                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
-                        Выход
-                    </button>
                 </form>
+
                 @else
                 <a href="{{ route('login') }}"
                     class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
