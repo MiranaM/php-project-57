@@ -23,9 +23,9 @@
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">ID</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Имя</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Дата создания</th>
-                            @auth
+                            @canany(['update', 'delete'], new \App\Models\TaskStatus())
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Действия</th>
-                            @endauth
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
