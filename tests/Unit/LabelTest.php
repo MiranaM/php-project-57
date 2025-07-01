@@ -12,6 +12,7 @@ class LabelTest extends TestCase
 
     public function testLabelCanBeCreated()
     {
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create([
             'name' => 'Feature label',
         ]);

@@ -12,6 +12,7 @@ class TaskStatusTest extends TestCase
 
     public function testTaskStatusCanBeCreated()
     {
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create([
             'name' => 'Testing status'
         ]);
