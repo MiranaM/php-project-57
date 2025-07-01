@@ -80,9 +80,9 @@
                             @canany(['update', 'delete'], $task)
                             <td>
                                 @can('delete', $task)
-                                <a class="text-red-600 hover:text-red-900" href="#" onclick="if(confirm('Вы уверены, что хотите удалить задачу?')) { 
-                                    event.preventDefault(); 
-                                    document.getElementById('delete-form-{{ $task->id }}').submit(); 
+                                <a class="text-red-600 hover:text-red-900" href="#" onclick="if(confirm('Вы уверены, что хотите удалить задачу?')) {
+                                    event.preventDefault();
+                                    document.getElementById('delete-form-{{ $task->id }}').submit();
                                 }">
                                     Удалить
                                 </a>

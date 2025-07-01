@@ -38,9 +38,9 @@
                             @canany(['update', 'delete'], $label)
                             <td>
                                 @can('delete', $label)
-                                <a class="text-red-600 hover:text-red-900" href="#" onclick="if(confirm('Вы уверены, что хотите удалить метку?')) { 
-                                    event.preventDefault(); 
-                                    document.getElementById('delete-form-{{ $label->id }}').submit(); 
+                                <a class="text-red-600 hover:text-red-900" href="#" onclick="if(confirm('Вы уверены, что хотите удалить метку?')) {
+                                    event.preventDefault();
+                                    document.getElementById('delete-form-{{ $label->id }}').submit();
                                 }">
                                     Удалить
                                 </a>
