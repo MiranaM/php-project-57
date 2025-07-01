@@ -17,7 +17,7 @@ class TaskStatusPolicyTest extends TestCase
         /** @var \App\Models\User $user */
         $otherUser = User::factory()->create();
 
-        /** @var \App\Models\TaskStatus $taskStatus */
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
 
         $policy = new TaskStatusPolicy();
