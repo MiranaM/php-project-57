@@ -21,27 +21,24 @@ jobs:
           coverage: xdebug
 
       - name: Install dependencies
-        run: composer install
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: Remove old .env
-        run: rm -f .env
-
-      - name: Remove .env (если вдруг есть)
-        run: rm -f .env
+      - name: Create SQLite database file
+        run: mkdir -p database && touch database/database.sqlite
 
       - name: Create .env for testing
         run: |
+          rm -f .env
           echo "APP_ENV=testing" >> .env
           echo "DB_CONNECTION=sqlite" >> .env
-          echo "DB_DATABASE=:memory:" >> .env
+          echo "DB_DATABASE=$(pwd)/database/database.sqlite" >> .env
           echo "CACHE_DRIVER=array" >> .env
           echo "QUEUE_CONNECTION=sync" >> .env
           echo "SESSION_DRIVER=array" >> .env
-          echo "" >> .env
           php artisan key:generate --show | xargs -I {} echo "APP_KEY={}" >> .env
 
       - name: Run migrations
-        run: php artisan migrate --env=testing --force
+        run: php artisan migrate --force
 
       - name: Run lint
         run: make lint
@@ -49,10 +46,12 @@ jobs:
       - name: Run tests
         run: make test
 
-      - name: Remove .env after tests
-        run: rm .env
-
       - name: Upload code coverage to SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Remove .env and test DB after tests
+        run: |
+          rm -f .env
+          rm -f database/database.sqlite
