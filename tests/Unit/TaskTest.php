@@ -14,7 +14,10 @@ class TaskTest extends TestCase
 
     public function testTaskCanBeCreatedWithRelations()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
+
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
 
         $task = Task::factory()->create([

@@ -19,6 +19,7 @@ class AuthenticationTest extends TestCase
 
     public function testUsersCanAuthenticateUsingTheLoginScreen(): void
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
         $response = $this->post('/login', [
@@ -32,6 +33,7 @@ class AuthenticationTest extends TestCase
 
     public function testUsersCanNotAuthenticateWithInvalidPassword(): void
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
         $this->post('/login', [
@@ -44,6 +46,7 @@ class AuthenticationTest extends TestCase
 
     public function testUsersCanLogout(): void
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/logout');

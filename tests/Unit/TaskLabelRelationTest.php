@@ -13,7 +13,10 @@ class TaskLabelRelationTest extends TestCase
 
     public function testTaskCanHaveLabels()
     {
+        /** @var \App\Models\Task $task */
         $task = Task::factory()->create();
+        
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
 
         $task->labels()->attach($label);
