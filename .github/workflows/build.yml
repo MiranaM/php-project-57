@@ -1,24 +1,35 @@
-name: Build
+name: PHP CI
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches: [main]
+
 jobs:
-  sonarqube:
-    name: SonarQube
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup PHP with Xdebug
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.3'
           coverage: xdebug
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Run lint
+        run: make lint
+
+      - name: Run tests
+        run: make test
+
+      - name: Upload code coverage to SonarCloud
+        uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
