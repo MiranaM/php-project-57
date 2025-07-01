@@ -32,7 +32,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('assigned_to_id'),
             ])
             ->with(['status', 'creator', 'assignee'])
-            ->defaultSort('id')
+            ->orderBy('id')
             ->paginate(15)
             ->appends(['filter' => $filter]);
 
@@ -119,12 +119,5 @@ class TaskController extends Controller
 
         flash('Задача успешно удалена')->success();
         return redirect()->route('tasks.index', ['page' => $request->input('page', 1)]);
-    }
-
-    private function authorizeAction(Task $task)
-    {
-        if (Auth::id() !== $task->created_by_id) {
-            abort(403, 'Нет прав для этого действия');
-        }
     }
 }

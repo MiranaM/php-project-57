@@ -13,7 +13,7 @@ class TaskStatusPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class TaskStatusPolicy
      */
     public function view(User $user, TaskStatus $taskStatus): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class TaskStatusPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class TaskStatusPolicy
      */
     public function restore(User $user, TaskStatus $taskStatus): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -61,6 +61,6 @@ class TaskStatusPolicy
      */
     public function forceDelete(User $user, TaskStatus $taskStatus): bool
     {
-        //
+        return true;
     }
 }
