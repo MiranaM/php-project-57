@@ -97,4 +97,29 @@ class LabelFeatureTest extends TestCase
 
         $response->assertSessionHasErrors(['name']);
     }
+
+    public function testGuestCannotDeleteLabel()
+    {
+        /** @var Label $label */
+        $label = Label::factory()->create();
+
+        $response = $this->delete(route('labels.destroy', $label));
+        $response->assertRedirect(route('login'));
+        $this->assertDatabaseHas('labels', ['id' => $label->id]);
+    }
+
+    public function testLabelUpdateValidationFails()
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        /** @var Label $label */
+        $label = Label::factory()->create();
+
+        $response = $this->patch(route('labels.update', $label), [
+            'name' => '',
+        ]);
+        $response->assertSessionHasErrors(['name']);
+    }
 }

@@ -98,4 +98,29 @@ class TaskStatusFeatureTest extends TestCase
 
         $response->assertSessionHasErrors(['name']);
     }
+
+    public function testGuestCannotDeleteStatus()
+    {
+        /** @var TaskStatus $status */
+        $status = TaskStatus::factory()->create();
+
+        $response = $this->delete(route('task_statuses.destroy', $status));
+        $response->assertRedirect(route('login'));
+        $this->assertDatabaseHas('task_statuses', ['id' => $status->id]);
+    }
+
+    public function testStatusUpdateValidationFails()
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        /** @var TaskStatus $status */
+        $status = TaskStatus::factory()->create();
+
+        $response = $this->patch(route('task_statuses.update', $status), [
+            'name' => '',
+        ]);
+        $response->assertSessionHasErrors(['name']);
+    }
 }
