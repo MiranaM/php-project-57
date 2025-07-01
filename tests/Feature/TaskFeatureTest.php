@@ -66,27 +66,27 @@ class TaskFeatureTest extends TestCase
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
     }
 
-public function testTaskCannotBeDeletedByNotOwner()
-{
-    /** @var User $user */
-    $user = User::factory()->create();
-    /** @var User $otherUser */
-    $otherUser = User::factory()->create();
+    public function testTaskCannotBeDeletedByNotOwner()
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
 
-    /** @var TaskStatus $status */
-    $status = TaskStatus::factory()->create();
-    /** @var Task $task */
-    $task = Task::factory()->create(['created_by_id' => $otherUser->id, 'status_id' => $status->id]);
+        /** @var TaskStatus $status */
+        $status = TaskStatus::factory()->create();
+        /** @var Task $task */
+        $task = Task::factory()->create(['created_by_id' => $otherUser->id, 'status_id' => $status->id]);
 
-    $this->actingAs($user);
-    $response = $this->delete(route('tasks.destroy', $task));
+        $this->actingAs($user);
+        $response = $this->delete(route('tasks.destroy', $task));
 
-    $response->assertStatus(302);
-    $response->assertRedirect(route('tasks.index', ['page' => 1]));
-    $response->assertSessionHas('flash_notification.0.message', 'Нет прав для этого действия');
-    $response->assertSessionHas('flash_notification.0.level', 'danger');
-    $this->assertDatabaseHas('tasks', ['id' => $task->id]);
-}
+        $response->assertStatus(302);
+        $response->assertRedirect(route('tasks.index', ['page' => 1]));
+        $response->assertSessionHas('flash_notification.0.message', 'Нет прав для этого действия');
+        $response->assertSessionHas('flash_notification.0.level', 'danger');
+        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
+    }
 
 
     public function testTaskListIsAccessible()
