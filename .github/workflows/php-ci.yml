@@ -43,8 +43,8 @@ jobs:
       - name: Run lint
         run: make lint
 
-      - name: Run tests
-        run: make test
+      - name: Run tests with coverage
+        run: make test-coverage
 
       - name: Upload code coverage to SonarCloud
         uses: SonarSource/sonarqube-scan-action@v2
