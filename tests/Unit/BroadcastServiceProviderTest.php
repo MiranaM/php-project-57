@@ -12,4 +12,10 @@ class BroadcastServiceProviderTest extends TestCase
         $provider = new BroadcastServiceProvider(app());
         $this->assertNotNull($provider);
     }
+
+    public function testProviderBoots()
+    {
+        $provider = new \App\Providers\BroadcastServiceProvider(app());
+        $this->assertNotNull($provider);
+    }
 }

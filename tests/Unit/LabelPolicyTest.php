@@ -18,4 +18,12 @@ class LabelPolicyTest extends TestCase
         $policy = new LabelPolicy();
         $this->assertTrue($policy->delete($user, $label));
     }
+
+    public function testDeletePolicyAlwaysTrue()
+    {
+        $user = User::factory()->create();
+        $label = Label::factory()->create();
+        $policy = new \App\Policies\LabelPolicy();
+        $this->assertTrue($policy->delete($user, $label));
+    }
 }

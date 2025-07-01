@@ -18,4 +18,12 @@ class EmailVerificationNotificationControllerTest extends TestCase
         $response = $this->post(route('verification.send'));
         $response->assertSessionHasNoErrors();
     }
+
+    public function testVerificationSendRouteAccessible()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post(route('verification.send'));
+        $this->assertTrue($response->isRedirection() || $response->isOk());
+    }
 }
