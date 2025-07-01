@@ -20,6 +20,7 @@ class TaskTest extends TestCase
         /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
 
+        /** @var \App\Models\Task $task */
         $task = Task::factory()->create([
             'name' => 'Test task',
             'status_id' => $status->id,
