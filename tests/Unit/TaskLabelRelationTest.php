@@ -15,7 +15,7 @@ class TaskLabelRelationTest extends TestCase
     {
         /** @var \App\Models\Task $task */
         $task = Task::factory()->create();
-        
+
         /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
 
