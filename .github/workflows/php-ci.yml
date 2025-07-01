@@ -40,6 +40,9 @@ jobs:
           echo "" >> .env
           php artisan key:generate --show | xargs -I {} echo "APP_KEY={}" >> .env
 
+      - name: Run migrations
+        run: php artisan migrate --env=testing --force
+
       - name: Run lint
         run: make lint
 
