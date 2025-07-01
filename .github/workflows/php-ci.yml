@@ -47,7 +47,7 @@ jobs:
         run: make test
 
       - name: Upload code coverage to SonarCloud
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
