@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
+use App\Http\Requests\TaskStatusRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,14 +25,9 @@ class TaskStatusController extends Controller
         return view('task_statuses.create');
     }
 
-    public function store(Request $request)
+    public function store(TaskStatusRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|unique:task_statuses|max:255',
-        ], [
-            'name.required' => 'Это обязательное поле',
-            'name.unique' => 'Статус с таким именем уже существует'
-        ]);
+        $validated = $request->validated();
 
         TaskStatus::create($validated);
 
@@ -44,11 +40,9 @@ class TaskStatusController extends Controller
         return view('task_statuses.edit', compact('taskStatus'));
     }
 
-    public function update(Request $request, TaskStatus $taskStatus)
+    public function update(TaskStatusRequest $request, TaskStatus $taskStatus)
     {
-        $validated = $request->validate([
-            'name' => 'required|unique:task_statuses,name,' . $taskStatus->id . '|max:255',
-        ]);
+        $validated = $request->validated();
 
         $taskStatus->update($validated);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Label;
+use App\Http\Requests\LabelRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,15 +25,9 @@ class LabelController extends Controller
         return view('labels.create');
     }
 
-    public function store(Request $request)
+    public function store(LabelRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|unique:labels|max:255',
-            'description' => 'nullable|string|max:1000',
-        ], [
-            'name.required' => 'Это обязательное поле',
-            'name.unique' => 'Метка с таким именем уже существует'
-        ]);
+        $validated = $request->validated();
 
         Label::create($validated);
         flash('Метка успешно создана')->success();
@@ -44,12 +39,9 @@ class LabelController extends Controller
         return view('labels.edit', compact('label'));
     }
 
-    public function update(Request $request, Label $label)
+    public function update(LabelRequest $request, Label $label)
     {
-        $validated = $request->validate([
-            'name' => 'required|unique:labels,name,' . $label->id,
-            'description' => 'nullable|string|max:1000',
-        ]);
+        $validated = $request->validated();
 
         $label->update($validated);
         flash('Метка успешно изменена')->success();

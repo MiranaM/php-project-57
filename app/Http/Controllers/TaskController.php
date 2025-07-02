@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\TaskStatus;
 use App\Models\Label;
+use App\Http\Requests\TaskRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -52,18 +53,10 @@ class TaskController extends Controller
         return view('tasks.create', compact('statuses', 'users', 'labels'));
     }
 
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'nullable|string',
-            'status_id' => 'required|exists:task_statuses,id',
-            'assigned_to_id' => 'nullable|exists:users,id',
-            'labels' => 'nullable|array',
-            'labels.*' => 'exists:labels,id',
-        ]);
-
-        $validated['created_by_id'] = Auth::id();
+        $validated = $request->validated();
+        $validated['created_by_id'] = \Auth::id();
 
         $task = Task::create($validated);
         $task->labels()->sync($request->input('labels', []));
@@ -89,16 +82,9 @@ class TaskController extends Controller
         return view('tasks.edit', compact('task', 'statuses', 'users', 'labels'));
     }
 
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest $request, Task $task)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'nullable|string',
-            'status_id' => 'required|exists:task_statuses,id',
-            'assigned_to_id' => 'nullable|exists:users,id',
-            'labels' => 'nullable|array',
-            'labels.*' => 'exists:labels,id',
-        ]);
+        $validated = $request->validated();
 
         $task->update($validated);
         $task->labels()->sync($request->input('labels', []));
