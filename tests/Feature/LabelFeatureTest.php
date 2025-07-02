@@ -14,6 +14,7 @@ class LabelFeatureTest extends TestCase
 
     public function testLabelsPage(): void
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -31,6 +32,7 @@ class LabelFeatureTest extends TestCase
 
     public function testLabelCanBeCreated()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -48,6 +50,7 @@ class LabelFeatureTest extends TestCase
 
     public function testValidationErrorsOnCreateLabel()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -59,9 +62,11 @@ class LabelFeatureTest extends TestCase
 
     public function testLabelCanBeUpdated()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
 
         $response = $this->patch(route('labels.update', $label), [
@@ -78,9 +83,11 @@ class LabelFeatureTest extends TestCase
 
     public function testLabelUpdateValidationFails()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
 
         $response = $this->patch(route('labels.update', $label), [
@@ -91,9 +98,11 @@ class LabelFeatureTest extends TestCase
 
     public function testLabelCanBeDeleted()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
         $response = $this->delete(route('labels.destroy', $label));
         $response->assertRedirect(route('labels.index'));
@@ -102,11 +111,15 @@ class LabelFeatureTest extends TestCase
 
     public function testLabelCannotBeDeletedIfAttachedToTask()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
+        /** @var \App\Models\Task $task */
         $task = Task::factory()->create();
+
         $task->labels()->attach($label);
 
         $response = $this->delete(route('labels.destroy', $label));
@@ -126,6 +139,7 @@ class LabelFeatureTest extends TestCase
 
     public function testGuestCannotDeleteLabel()
     {
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
 
         $response = $this->delete(route('labels.destroy', $label));

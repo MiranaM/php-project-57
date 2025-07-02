@@ -14,6 +14,7 @@ class TaskFeatureTest extends TestCase
 
     public function testTasksPage()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -23,10 +24,13 @@ class TaskFeatureTest extends TestCase
 
     public function testTaskDetailIsAccessible()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
+        /** @var \App\Models\Task $task */
         $task = Task::factory()->create(['created_by_id' => $user->id, 'status_id' => $status->id]);
 
         $response = $this->get(route('tasks.show', $task));
@@ -36,9 +40,11 @@ class TaskFeatureTest extends TestCase
 
     public function testTaskCanBeCreated()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
 
         $response = $this->post(route('tasks.store'), [
@@ -56,6 +62,7 @@ class TaskFeatureTest extends TestCase
 
     public function testValidationErrorsOnCreateTask()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -67,6 +74,7 @@ class TaskFeatureTest extends TestCase
 
     public function testGuestCannotCreateTask()
     {
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
 
         $response = $this->post(route('tasks.store'), [
@@ -79,11 +87,15 @@ class TaskFeatureTest extends TestCase
 
     public function testTaskCanBeUpdated()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
+        /** @var \App\Models\Task $task */
         $task = Task::factory()->create(['created_by_id' => $user->id, 'status_id' => $status->id]);
+        /** @var \App\Models\TaskStatus $$newStatus */
         $newStatus = TaskStatus::factory()->create();
 
         $response = $this->patch(route('tasks.update', $task), [
@@ -101,10 +113,13 @@ class TaskFeatureTest extends TestCase
 
     public function testTaskCanBeDeleted()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
+        /** @var \App\Models\Task $task */
         $task = Task::factory()->create(['created_by_id' => $user->id, 'status_id' => $status->id]);
         $response = $this->delete(route('tasks.destroy', $task));
         $response->assertRedirectContains('/tasks');
@@ -113,10 +128,14 @@ class TaskFeatureTest extends TestCase
 
     public function testTaskCannotBeDeletedByNotOwner()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
+        /** @var \App\Models\User $$otherUser */
         $otherUser = User::factory()->create();
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
+        /** @var \App\Models\Task $task */
         $task = Task::factory()->create(['created_by_id' => $otherUser->id, 'status_id' => $status->id]);
 
         $this->actingAs($user);

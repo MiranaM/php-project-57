@@ -21,6 +21,7 @@ class LabelPolicyTest extends TestCase
 
     public function testUserCanCreateLabel()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 

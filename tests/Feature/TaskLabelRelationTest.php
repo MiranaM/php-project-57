@@ -15,10 +15,13 @@ class TaskLabelRelationTest extends TestCase
 
     public function testTaskCanHaveLabels()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
 
         $response = $this->post(route('tasks.store'), [
@@ -36,10 +39,13 @@ class TaskLabelRelationTest extends TestCase
 
     public function testLabelsDisplayedOnTaskPage()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\Task $task */
         $task = Task::factory()->create();
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
         $task->labels()->attach($label);
 

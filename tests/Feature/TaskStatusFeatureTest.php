@@ -14,6 +14,7 @@ class TaskStatusFeatureTest extends TestCase
 
     public function testStatusesPage()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -23,6 +24,7 @@ class TaskStatusFeatureTest extends TestCase
 
     public function testStatusCanBeCreated()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -36,6 +38,7 @@ class TaskStatusFeatureTest extends TestCase
 
     public function testValidationErrorsOnCreateStatus()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -47,9 +50,11 @@ class TaskStatusFeatureTest extends TestCase
 
     public function testStatusCanBeUpdated()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
 
         $response = $this->patch(route('task_statuses.update', $status), [
@@ -62,9 +67,11 @@ class TaskStatusFeatureTest extends TestCase
 
     public function testStatusUpdateValidationFails()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
 
         $response = $this->patch(route('task_statuses.update', $status), [
@@ -75,9 +82,11 @@ class TaskStatusFeatureTest extends TestCase
 
     public function testStatusCanBeDeleted()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
 
         $response = $this->delete(route('task_statuses.destroy', $status));
@@ -88,10 +97,13 @@ class TaskStatusFeatureTest extends TestCase
 
     public function testStatusCannotBeDeletedIfUsedInTask()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
+        /** @var \App\Models\Task $task */
         $task = Task::factory()->create(['status_id' => $status->id]);
 
         $response = $this->delete(route('task_statuses.destroy', $status));
@@ -112,6 +124,7 @@ class TaskStatusFeatureTest extends TestCase
 
     public function testGuestCannotDeleteStatus()
     {
+        /** @var \App\Models\TaskStatus $status */
         $status = TaskStatus::factory()->create();
 
         $response = $this->delete(route('task_statuses.destroy', $status));

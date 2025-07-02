@@ -21,6 +21,7 @@ class TaskStatusPolicyTest extends TestCase
 
     public function testUserCanCreateStatus()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
 
